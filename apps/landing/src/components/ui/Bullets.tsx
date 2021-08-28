@@ -5,7 +5,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { getToken } from '@vide/ui';
 import { AiOutlineLeft } from 'react-icons/ai';
-const ItemBullet = styled.span<{ active: boolean }>`
+const ItemBullet = styled.button<{ active: boolean }>`
   width: 30px;
   height: 30px;
   border: 2px solid ${getToken('colors.gray.200')};
@@ -32,16 +32,28 @@ const ItemBullet = styled.span<{ active: boolean }>`
   }
 `;
 
-const Direction = styled(AiOutlineLeft)<{ reverse: boolean }>`
+const Direction = styled(AiOutlineLeft)<{ rever: boolean }>`
   transform: scale(1.5);
   ${(props) =>
-    props.reverse &&
+    props.rever &&
     css`
       transform: rotate(180deg) scale(1.5);
     `}
 `;
 
-function Bullets() {
+/***
+ * bullets compoents
+ * Input :
+ * size : number of
+ * onLeft
+ * onRigth
+ */
+type BulltetsProps = {
+  onRight?: () => void;
+  onLeft?: () => void;
+};
+
+function Bullets({ onRight, onLeft }: BulltetsProps) {
   return (
     <Box
       display="flex"
@@ -50,15 +62,15 @@ function Bullets() {
       alignItems="center"
       maxWidth="250px"
     >
-      <ItemBullet active={true}>
-        <Direction reverse={false} />
+      <ItemBullet active={true} onClick={onLeft}>
+        <Direction rever={false} />
       </ItemBullet>
-      <ItemBullet active={false}>1</ItemBullet>
+      {/* <ItemBullet active={false}>1</ItemBullet>
       <ItemBullet active={false}>2</ItemBullet>
       <ItemBullet active={true}>3</ItemBullet>
-      <ItemBullet active={false}>4</ItemBullet>
-      <ItemBullet active>
-        <Direction reverse={true} />
+      <ItemBullset active={false}>4</ItemBullset> */}
+      <ItemBullet active onClick={onRight}>
+        <Direction rever={true} />
       </ItemBullet>
     </Box>
   );

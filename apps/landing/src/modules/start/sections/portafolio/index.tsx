@@ -11,12 +11,14 @@ import styled from '@emotion/styled';
 
 import { Subtitle } from '../../../../components/ui';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 import { Bullets } from '../../../../components/ui';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { chakra } from '@chakra-ui/react';
 import { Element } from 'react-scroll';
 import { down } from 'styled-breakpoints';
+import { Swiper as SwiperClass } from 'swiper';
+import { PROJECTS_DATA, ProjectDataType } from './projectsData';
 const Wrapper = styled(Container)`
   padding: 50px 0;
   .portafolio_project {
@@ -37,6 +39,64 @@ const Wrapper = styled(Container)`
 const SwiperContainer = chakra(Swiper);
 
 function Portafolio() {
+  const [swiper, setSwiper] = useState<SwiperClass>(null);
+  const mapProject = (pr: ProjectDataType) => {
+    return (
+      <SwiperSlide>
+        <Flex className="portafolio_project">
+          <VStack
+            width={['100%', '35%']}
+            spacing={5}
+            className="left"
+            border="2px solid white"
+            justifyContent="flex-start"
+            alignItems="flex-start"
+            order={[2, 1]}
+          >
+            <Text
+              as="h3"
+              w={'100%'}
+              textAlign={['center', 'left']}
+              fontSize="3xl"
+              fontWeight="bold"
+            >
+              {pr.name}
+            </Text>
+            <Text as="p" textAlign={['center', 'left']}>
+              {pr.description}
+            </Text>
+            <Box display="block" textAlign="center" w={'100%'} py={3}>
+              <Button
+                as="a"
+                href={pr.redirect}
+                variant="solid"
+                display="block"
+                mx={['auto', 'initial']}
+              >
+                visitar
+              </Button>
+            </Box>
+          </VStack>
+          <VStack width={['100%', '50%']} order={[1, 2]}>
+            <Swiper>
+              {pr.images.map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <Image
+                    alt=""
+                    src={`/${img}`}
+                    width={350}
+                    height={350}
+                    objectFit="contain"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </VStack>
+        </Flex>
+      </SwiperSlide>
+    );
+  };
+
   return (
     <Element name="portafolio">
       <Wrapper size={'lg'}>
@@ -47,58 +107,17 @@ function Portafolio() {
         </Text>
         {/* bullets */}
         {/* gallery */}
-        <SwiperContainer padding="5" maxWidth="1200px">
-          <SwiperSlide>
-            <Flex className="portafolio_project">
-              <VStack
-                width={['100%', '35%']}
-                spacing={5}
-                className="left"
-                border="2px solid white"
-                justifyContent="flex-start"
-                alignItems="flex-start"
-                order={[2, 1]}
-              >
-                <Text
-                  as="h3"
-                  w={'100%'}
-                  textAlign={['center', 'left']}
-                  fontSize="3xl"
-                  fontWeight="bold"
-                >
-                  Dubbie Eccomerce
-                </Text>
-                <Text as="p" textAlign={['center', 'left']}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit ut
-                  aliquam, purus sit amet luctus venenatis
-                </Text>
-                <Box display="block" w={'100%'} py={3}>
-                  <Button
-                    variant="solid"
-                    display="block"
-                    mx={['auto', 'initial']}
-                  >
-                    visitar
-                  </Button>
-                </Box>
-              </VStack>
-              <VStack width={['100%', '50%']} order={[1, 2]}>
-                <Swiper>
-                  <SwiperSlide>
-                    <Image
-                      alt=""
-                      src="/projects/test.png"
-                      width={350}
-                      height={350}
-                      objectFit="cover"
-                    ></Image>
-                  </SwiperSlide>
-                </Swiper>
-              </VStack>
-            </Flex>
-          </SwiperSlide>
+        <SwiperContainer onSwiper={setSwiper} padding="5" maxWidth="1200px">
+          {PROJECTS_DATA.map(mapProject)}
           <Flex w={'100%'} display={['none', 'flex']} justifyContent="center">
-            <Bullets />
+            <Bullets
+              onLeft={() => {
+                swiper.slidePrev();
+              }}
+              onRight={() => {
+                swiper.slideNext();
+              }}
+            />
           </Flex>
         </SwiperContainer>
       </Wrapper>
