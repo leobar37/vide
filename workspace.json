@@ -7,6 +7,7 @@
       "projectType": "application",
       "targets": {
         "build": {
+          "generatePackageJson": true,
           "executor": "@nrwl/next:build",
           "outputs": ["{options.outputPath}"],
           "options": {

@@ -1,5 +1,5 @@
-// import { StyleConfig } from '@chakra-ui/theme-tools';
-export const Container = {
+import { StyleConfig } from '@chakra-ui/theme-tools';
+export const Container: StyleConfig = {
   sizes: {
     fluid: {
       margin: '30px 0',
@@ -14,4 +14,4 @@ export const Container = {
       maxWidth: '1200px',
     },
   },
-};
+} as any;

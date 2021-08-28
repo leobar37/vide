@@ -45,4 +45,4 @@ const Button: StyleConfig = {
   },
 };
 
-export default Button;
+export default Button as any;
