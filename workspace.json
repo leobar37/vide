@@ -9,7 +9,10 @@
         "deploy": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["nx build landing --configuration=production"]
+            "commands": [
+              "nx build landing --configuration=production",
+              "sudo docker build -f ./apps/landing/Dockerfile . -t landing"
+            ]
           },
           "parallel": false
         },

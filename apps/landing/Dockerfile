@@ -2,7 +2,7 @@ FROM node:14-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY ./dist/apps/landing/package*.json ./
+COPY package*.json .
 RUN npm install && npm install -D typescript
 
 # Production image, copy all the files and run next
@@ -18,7 +18,7 @@ RUN adduser -S nextjs -u 1001
 # COPY --from=builder /app/next.config.js ./
 COPY --from=deps /app/node_modules /app/node_modules/
 COPY --from=deps /app/package*.json /app/
-COPY ./dist/apps/landing .
+COPY . .
 
 USER nextjs
 

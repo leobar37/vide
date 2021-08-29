@@ -76,6 +76,21 @@ export function exec(
   });
 }
 
+export const getDirectories = async (
+  globPath: string,
+  exclude?: string | string[]
+): Promise<string[]> => {
+  const paths = await getListOfFiles(globPath, exclude);
+  return paths.filter((path) => fs.lstatSync(path).isDirectory());
+};
+
+export const removeOnlyDirectories = async (globPath: string) => {
+  const directories = await getDirectories(globPath);
+  for await (const directorie of directories) {
+    await removeRecursively(directorie);
+  }
+};
+
 export function cmd(command: string, args: string[]): Promise<string> {
   return exec(command, args, (command: string) => command);
 }
@@ -105,3 +120,20 @@ export const nameOfPath = (path: string) => {
   const splitPath = path.split('/');
   return splitPath[splitPath.length - 1];
 };
+
+// const ora = require('ora');
+// export async function runTask(name: string, taskFn: () => Promise<any>) {
+//   const spinner = ora(name);
+
+//   try {
+//     spinner.start();
+
+//     await taskFn();
+
+//     spinner.succeed();
+//   } catch (e) {
+//     spinner.fail();
+
+//     throw e;
+//   }
+// }
